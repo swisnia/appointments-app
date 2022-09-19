@@ -26,7 +26,13 @@ const AddAppointment = ({services, workers, appointments, handleShowWindow, getO
     const checkFreeHours = () => {
         let freeHours = []
 
-        if(!values.date || !values.service || !values.worker) return
+        if(!values.date || !values.service || !values.worker || 
+            !(moment().isSameOrBefore(values.date, 'day'))){ //check if date is in the future
+
+            setValues({...values, freeHours: freeHours})
+            return
+        }
+        
         //Get day of a week
         let weekday = new Date(values.date).getDay()
         weekday === 0 ? weekday = 6 : weekday -= 1
@@ -48,6 +54,24 @@ const AddAppointment = ({services, workers, appointments, handleShowWindow, getO
 
         const [open, close] = getOpeningHours(weekday)
         let t = open
+
+        if(moment().isSame(values.date, 'day')){
+            let now = moment().format('HH:mm')
+            now = parseInt(now.split(':')[0])*60 + parseInt(now.split(':')[1])
+            //checking if time is before closing
+            if(now < close) {
+                //setting counter for now
+                t = now
+                //filter appointments after now
+                filteredAppointments = filteredAppointments.filter(e => {
+                    return e.hour >= t
+                })
+            } else {
+                setValues({...values, freeHours: freeHours})
+                return
+            }
+                
+        }
         if(filteredAppointments.length > 0){
             filteredAppointments.forEach((e) =>{ 
                 //getting all free hours between all appointments
