@@ -11,12 +11,12 @@ import {
     LOGIN_USER_ERROR,
     TOGGLE_SIDEBAR,
     LOGOUT_USER,
-    UPDATE_USER_BEGIN,
+    /*UPDATE_USER_BEGIN,
     UPDATE_USER_SUCCESS,
-    UPDATE_USER_ERROR,
+    UPDATE_USER_ERROR,*/
     HANDLE_CHANGE,
-    CLEAR_VALUES,
-    CHANGE_PAGE,
+    /*CLEAR_VALUES,
+    CHANGE_PAGE,*/
     //APPOINTMENTS
     ADD_SERVICE_BEGIN,
     ADD_SERVICE_SUCCESS,
@@ -168,7 +168,7 @@ const AppProvider = ({ children }) => {
         dispatch({type: LOGOUT_USER})
         removeUserFromLocalStorage()
     }
-    const updateUser = async (currentUser) => {
+    /*const updateUser = async (currentUser) => {
         dispatch({type: UPDATE_USER_BEGIN})
         try {
             const {data} = await authFetch.patch('auth/updateUser', currentUser)
@@ -188,21 +188,21 @@ const AppProvider = ({ children }) => {
             }
         }
         clearAlert()
-    }
+    }*/
     const handleChange = ({name, value}) => {
         dispatch({
             type: HANDLE_CHANGE,
             payload: {name, value}
         })
     }
-    const clearValues = () => {
+    /*const clearValues = () => {
         dispatch({
             type: CLEAR_VALUES           
         })
     }
     const changePage = (page) => {
         dispatch({type: CHANGE_PAGE, payload: {page: page}})
-    }
+    }*/
 
     /*APPOINTMENTS*/
     const addService = async (service) => {
@@ -371,7 +371,7 @@ const AppProvider = ({ children }) => {
                 type: UPDATE_WORKER_WORKING_HOURS_ERROR,
                 payload: {msg: error.response.data.msg}
             })
-        }
+        } 
         clearAlert()
     }
     const updateSalonData = async (newData) => {
@@ -485,10 +485,10 @@ const AppProvider = ({ children }) => {
             loginUser, 
             toggleSidebar, 
             logutUser, 
-            updateUser, 
+            //updateUser, 
             handleChange, 
-            clearValues,
-            changePage,
+            //clearValues,
+            //changePage,
             //Appointments
             addService,
             deleteServices,

@@ -9,13 +9,13 @@ import {
     LOGIN_USER_ERROR,
     TOGGLE_SIDEBAR,
     LOGOUT_USER,
-    UPDATE_USER_BEGIN,
+    /*UPDATE_USER_BEGIN,
     UPDATE_USER_SUCCESS,
-    UPDATE_USER_ERROR,
+    UPDATE_USER_ERROR,*/
     HANDLE_CHANGE,
-    CLEAR_VALUES,
+    /*CLEAR_VALUES,
     CLEAR_FILTERS,
-    CHANGE_PAGE,
+    CHANGE_PAGE,*/
     //appointments
     ADD_SERVICE_BEGIN,
     ADD_SERVICE_SUCCESS,
@@ -130,7 +130,7 @@ const reducer = (state, action) => {/*action ustawiam za pomoca dispatch*/
             firmLocation: '',
         }
     }
-    if(action.type === UPDATE_USER_BEGIN){
+    /*if(action.type === UPDATE_USER_BEGIN){
         return {...state, isLoading: true}
     }
     if(action.type === UPDATE_USER_SUCCESS){
@@ -154,7 +154,7 @@ const reducer = (state, action) => {/*action ustawiam za pomoca dispatch*/
             alertType: 'danger',
             alertText: action.payload.msg
         }
-    }
+    }*/
     if(action.type === HANDLE_CHANGE){
         return {
             ...state,
@@ -162,7 +162,7 @@ const reducer = (state, action) => {/*action ustawiam za pomoca dispatch*/
             [action.payload.name]: action.payload.value
         }
     }
-    if(action.type === CLEAR_VALUES){
+    /*if(action.type === CLEAR_VALUES){
         const initialState = {
             isEditing: false,
             editJobId: '',
@@ -176,8 +176,8 @@ const reducer = (state, action) => {/*action ustawiam za pomoca dispatch*/
             ...state,
             ...initialState 
         }
-    }
-    if(action.type === CLEAR_FILTERS){
+    }*/
+    /*if(action.type === CLEAR_FILTERS){
         return {
             ...state,  
             search: '',
@@ -185,14 +185,14 @@ const reducer = (state, action) => {/*action ustawiam za pomoca dispatch*/
             searchType: 'all',
             sort: 'latest',           
         }
-    }
-    if(action.type === CHANGE_PAGE){
+    }*/
+    /*if(action.type === CHANGE_PAGE){
         return {
             ...state,  
             page: action.payload.page 
                      
         }
-    }
+    }*/
     //Appointemnts
     if(action.type === ADD_SERVICE_BEGIN){
         return {...state, isLoading: true}

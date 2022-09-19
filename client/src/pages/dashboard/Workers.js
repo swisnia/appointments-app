@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { 
   WorkersSidebar, 
   WorkerData, 
@@ -30,9 +30,14 @@ const Workers = () => {
   const toggleAddWorker = () => {
     setValues({...values, showAddWorker: !values.showAddWorker})
   }
+  useEffect(() => {
+    setValues({...values, currentWorker: firm.workers[0]})
+    // eslint-disable-next-line
+  }, [firm])
+  
   return (
     <Wrapper>
-      {values.showAddWorker && 
+      {values.showAddWorker &&  
       <AddWorker 
         hideWindow={toggleAddWorker} 
         openingHours={firm.openingHours}
