@@ -52,9 +52,13 @@ const AddAppointment = ({services, workers, appointments, handleShowWindow, getO
         //sorting appointments
         filteredAppointments.sort((a,b) => {return a.hour - b.hour})
 
-        const [open, close] = getOpeningHours(weekday)
+        const [open, close, checked] = getOpeningHours(weekday)
         let t = open
-
+        //checking if salon i open
+        if(!checked){
+            setValues({...values, freeHours: freeHours})
+            return
+        }
         if(moment().isSame(values.date, 'day')){
             let now = moment().format('HH:mm')
             now = parseInt(now.split(':')[0])*60 + parseInt(now.split(':')[1])

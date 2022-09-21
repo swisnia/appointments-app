@@ -72,9 +72,16 @@ const Wrapper = styled.aside`
         border-radius: 0.35rem;
         padding: 0.3rem 0.5rem;
         display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        flex-direction: row;
+        justify-content: space-between;
+        /*overflow: hidden;
+        text-overflow: ellipsis;*/
+    }
+    .delete-appointment-btn{
+        height: min-content;
+    }
+    .delete-appointment-btn:hover{
+        cursor: pointer;
     }
     .service-name{
         font-weight: bold;

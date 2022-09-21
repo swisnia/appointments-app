@@ -204,7 +204,7 @@ const deleteSalonImg = async (req, res, next) => {
         })
 
         const firm = await Firm.findOne({_id: req.user.userId})
-        res.status(200).json({firm, workers: firm.workers})
+        res.status(200).json({firm})
 
     } catch (error) {
         next(error)
@@ -229,6 +229,24 @@ const addNewAppointment = async (req, res, next) => {
         next(error)
     }
 }
+const deleteAppointment = async (req, res, next) => {
+    try {
+        const appointmentId = req.query.id
+        if(!appointmentId){
+            throw new BadRequestError('Please provide appointment id')
+        }
+        await Firm.findOneAndUpdate({
+            _id: req.user.userId,
+        }, {
+            $pull: {"appointments": {_id: appointmentId}}
+        })
+
+        const firm = await Firm.findOne({_id: req.user.userId})
+        res.status(200).json({firm})
+    } catch (error) {
+        next(error)
+    }
+}
 export {
     getAppointments, 
     addService, 
@@ -241,5 +259,6 @@ export {
     updateSalonOpeningHours,
     addNewSalonImg,
     deleteSalonImg,
-    addNewAppointment
+    addNewAppointment,
+    deleteAppointment
 }

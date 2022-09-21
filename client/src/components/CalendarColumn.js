@@ -1,7 +1,10 @@
 import React, { useState,  useEffect} from 'react'
+import {BsTrash} from 'react-icons/bs'
+import { useAppContext } from '../context/appContext'
 
 const CalendarColumn = ({rows, appointments, workerId, open, close, date}) => {
   const [workersAppointments, setWorkersAppointments] = useState()
+  const {deleteAppointment} = useAppContext()
 
   const getOneMinuteHeight = () => {
     const calendarSidebar = document.getElementById('calendar-sidebar').offsetHeight-50 //-height of cell with hour
@@ -21,6 +24,10 @@ const CalendarColumn = ({rows, appointments, workerId, open, close, date}) => {
   }
   const changeTimeFormat = (t) => {
     return `${parseInt(t/60)}:${('00' + t%60).slice(-2)}`
+  }
+  const removeAppointment = (e) => {
+    const appointmentId = e.target.parentElement.id
+    deleteAppointment(appointmentId)
   }
   useEffect(() => {
     const oneMinuteHeight = getOneMinuteHeight()
@@ -45,16 +52,25 @@ const CalendarColumn = ({rows, appointments, workerId, open, close, date}) => {
           <div 
             className='appointment-container' 
             key={e._id}
+            id={e._id}
             style={{
               height: `${e.height}px`,
               top: `${e.top}px`
             }}>
+              <div>
                 <h6 className='service-name'>{e.serviceName}</h6>
                 <small>
                   {changeTimeFormat(e.hour)}-
                   {changeTimeFormat(e.hour+e.time)}
                 </small>
-          </div>
+              </div>
+              <BsTrash 
+                className='delete-appointment-btn'
+                onClick={removeAppointment}
+              />
+
+              
+              </div>
           )
         })}
     </div>

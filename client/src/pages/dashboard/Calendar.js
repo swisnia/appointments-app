@@ -23,7 +23,9 @@ const Calendar = () => {
     const closeMinutes = firm.openingHours[weekday].close.split(':')[1]
     const close = parseInt(closeHours) * 60 + parseInt(closeMinutes)
 
-    return [open, close]
+    const checked = firm.openingHours[weekday].checked
+
+    return [open, close, checked]
   }
   const getWeekday = () => {
     let weekday = parseInt(moment(values.date).format('d')) 

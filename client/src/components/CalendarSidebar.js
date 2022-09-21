@@ -4,7 +4,7 @@ const CalendarSidebar = ({rows}) => {
 
   return (
     <div id='calendar-sidebar'>
-       {rows && rows.map((e, index) => {
+       {rows && rows.map((e, index) => { 
         return(
             <h5 
                 key={index} 

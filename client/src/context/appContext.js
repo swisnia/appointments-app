@@ -45,7 +45,10 @@ import {
     DELETE_SALON_IMG_SUCCESS,
     ADD_NEW_APPOINTMENT_BEGIN,
     ADD_NEW_APPOINTMENT_SUCCESS,
-    ADD_NEW_APPOINTMENT_ERROR
+    ADD_NEW_APPOINTMENT_ERROR,
+    DELETE_APPOINTMENT_BEGIN,
+    DELETE_APPOINTMENT_SUCCESS,
+    DELETE_APPOINTMENT_ERROR
 } from "./actions";
 
 import reducer from "./reducers";
@@ -477,6 +480,24 @@ const AppProvider = ({ children }) => {
         }
         clearAlert()
     }
+    const deleteAppointment = async (id) => {
+        dispatch({type: DELETE_APPOINTMENT_BEGIN})
+        try {
+            const { data } = await authFetch.delete(`firm/calendar?id=${id}`)
+            dispatch({type: DELETE_APPOINTMENT_SUCCESS, 
+                payload: {
+                    firm: data.firm,
+                }})
+            updateFirmInLocalStortage(data.firm)
+        } catch (error) {
+            if(error.response.status === 401) return
+            dispatch({
+                type: DELETE_APPOINTMENT_ERROR,
+                payload: {msg: error.response.data.msg}
+            })
+        }
+        clearAlert()
+    }
     return (
         <AppContext.Provider value = {{
             ...state, 
@@ -501,7 +522,8 @@ const AppProvider = ({ children }) => {
             updateSalonOpeningHours,
             addNewSalonImage,
             deleteSalonImg,
-            addNewAppointment
+            addNewAppointment,
+            deleteAppointment
             }}>
 
             {children}

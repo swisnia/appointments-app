@@ -44,7 +44,10 @@ import {
     DELETE_SALON_IMG_SUCCESS,
     ADD_NEW_APPOINTMENT_BEGIN,
     ADD_NEW_APPOINTMENT_SUCCESS,
-    ADD_NEW_APPOINTMENT_ERROR  
+    ADD_NEW_APPOINTMENT_ERROR,
+    DELETE_APPOINTMENT_BEGIN,
+    DELETE_APPOINTMENT_SUCCESS,
+    DELETE_APPOINTMENT_ERROR  
 } from "./actions"
 import { initialState } from "./appContext"
 
@@ -397,6 +400,25 @@ const reducer = (state, action) => {/*action ustawiam za pomoca dispatch*/
             showAlert: true,
             alertType: 'success',
             alertText: 'Wizyta dodana pomyślnie'
+        }
+    }
+    if(action.type === DELETE_APPOINTMENT_ERROR){
+        return {
+            ...state, 
+            isLoading: false,
+            showAlert: true,
+            alertType: 'danger',
+            alertText: action.payload.msg
+        }
+    }
+    if(action.type === DELETE_APPOINTMENT_BEGIN){
+        return {...state, isLoading: true}
+    }
+    if(action.type === DELETE_APPOINTMENT_SUCCESS){
+        return {
+            ...state, 
+            isLoading: false,
+            firm: action.payload.firm,
         }
     }
 

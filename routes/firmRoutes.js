@@ -12,7 +12,8 @@ import {
     updateSalonOpeningHours,
     addNewSalonImg,
     deleteSalonImg,
-    addNewAppointment
+    addNewAppointment,
+    deleteAppointment
 } from '../controllers/firmController.js'
 import authenticateUser from '../middleware/auth.js'
 
@@ -25,7 +26,7 @@ router.route('/workers/workingHours').patch(authenticateUser, updateWorkerWorkin
 router.route('/profile/data').patch(authenticateUser, updateSalonData)
 router.route('/profile/openingHours').patch(authenticateUser, updateSalonOpeningHours)
 router.route('/profile/gallery').patch(authenticateUser, addNewSalonImg).delete(authenticateUser, deleteSalonImg)
-router.route('/calendar').patch(authenticateUser, addNewAppointment)
+router.route('/calendar').patch(authenticateUser, addNewAppointment).delete(authenticateUser, deleteAppointment)
 
 
 
