@@ -1,17 +1,19 @@
 import React,{ useState } from 'react'
 import { useAppContext } from '../../context/appContext'
 import Wrapper from '../../assets/wrappers/Calendar'
-import { CalendarSidebar, CalendarColumn, AddAppointment} from '../../components'
+import { CalendarSidebar, CalendarColumn, AddAppointment, YesOrNotAlert} from '../../components'
 import moment from 'moment'
 import {AiOutlineArrowLeft, AiOutlineArrowRight} from 'react-icons/ai'
 
 const initialState = {
   show: false,
-  date: moment().format()
+  date: moment().format(),
+  showYesOrNotAlert: false,
+  removeAppointmentId: ''
 }
 
 const Calendar = () => {
-  const {firm} = useAppContext()
+  const {firm, deleteAppointment} = useAppContext()
   const [values, setValues] = useState(initialState)
   
   const getOpeningHours = (weekday) => {
@@ -55,9 +57,23 @@ const Calendar = () => {
     const date = moment(values.date).add(1, 'days')
     setValues({...values, date: date})
   }
-  
+  const showAlert = (e) => {
+    const appointmentId = e.target.parentElement.id
+    setValues({...values, removeAppointmentId: appointmentId, showYesOrNotAlert: true})
+  }
+  const removeAppointment = () => {
+    deleteAppointment(values.removeAppointmentId)
+    setValues({...values, showYesOrNotAlert: false})
+  }
   return (
     <Wrapper>
+      {values.showYesOrNotAlert && 
+        <YesOrNotAlert 
+          alertText='Czy na pewno chcesz usunąć tą wizytę?'
+          onYes={removeAppointment}
+          onNot={()=> setValues({...values, showYesOrNotAlert: false})}
+        />
+      }
       {values.show &&<AddAppointment 
         workers={firm.workers}
         services={firm.services}
@@ -102,6 +118,7 @@ const Calendar = () => {
               close={close}
               date={moment(values.date).format('YYYY-MM-DD')}
               rows={getRows()}
+              removeAppointment={showAlert}
             />
           )
         })}

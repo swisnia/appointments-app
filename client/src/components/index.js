@@ -25,6 +25,7 @@ import SalonOpinions from './SalonOpinions'
 import CalendarSidebar from './CalendarSidebar'
 import CalendarColumn from './CalendarColumn'
 import AddAppointment from './AddAppointment'
+import YesOrNotAlert from './YesOrNotAlert'
 
 export {
     Logo, 
@@ -53,5 +54,6 @@ export {
     SalonOpinions,
     CalendarSidebar,
     CalendarColumn,
-    AddAppointment
+    AddAppointment,
+    YesOrNotAlert
 }

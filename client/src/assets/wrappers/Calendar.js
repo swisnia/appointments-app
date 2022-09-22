@@ -74,11 +74,13 @@ const Wrapper = styled.aside`
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        /*overflow: hidden;
-        text-overflow: ellipsis;*/
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .delete-appointment-btn{
         height: min-content;
+        min-width: 16px;
+        align-self: flex-end;
     }
     .delete-appointment-btn:hover{
         cursor: pointer;
@@ -86,7 +88,7 @@ const Wrapper = styled.aside`
     .service-name{
         font-weight: bold;
         font-size: 1rem;
-        white-space: nowrap;
+        overflow: hidden;
         text-overflow: ellipsis;
     }
     .btn-add-appointment{

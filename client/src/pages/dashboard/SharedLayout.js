@@ -1,7 +1,7 @@
 import React from 'react'
 import { Outlet} from 'react-router-dom'
 import Wrapper from '../../assets/wrappers/SharedLayout'
-import { Bottombar, Navbar, BigSidebar, Alert, Loading } from '../../components'
+import { Bottombar, Navbar, BigSidebar, Alert, Loading} from '../../components'
 import { useAppContext } from '../../context/appContext'
 
 const SharedLayout = () => {
