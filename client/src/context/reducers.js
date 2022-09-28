@@ -133,31 +133,6 @@ const reducer = (state, action) => {/*action ustawiam za pomoca dispatch*/
             firmLocation: '',
         }
     }
-    /*if(action.type === UPDATE_USER_BEGIN){
-        return {...state, isLoading: true}
-    }
-    if(action.type === UPDATE_USER_SUCCESS){
-        return {
-            ...state,  
-            isLoading: false,
-            token: action.payload.token,
-            user: action.payload.user,
-            userLocation: action.payload.location,
-            jobLocation: action.payload.location,
-            showAlert: true,
-            alertType: 'success',
-            alertText: 'User Profile Updated!'
-        }
-    }
-    if(action.type === UPDATE_USER_ERROR){
-        return {
-            ...state, 
-            isLoading: false,
-            showAlert: true,
-            alertType: 'danger',
-            alertText: action.payload.msg
-        }
-    }*/
     if(action.type === HANDLE_CHANGE){
         return {
             ...state,
@@ -165,37 +140,6 @@ const reducer = (state, action) => {/*action ustawiam za pomoca dispatch*/
             [action.payload.name]: action.payload.value
         }
     }
-    /*if(action.type === CLEAR_VALUES){
-        const initialState = {
-            isEditing: false,
-            editJobId: '',
-            position: '',
-            company: '',
-            jobLocation: state.userLocation,
-            jobType: 'full-time',
-            status: 'pending'
-        }
-        return {
-            ...state,
-            ...initialState 
-        }
-    }*/
-    /*if(action.type === CLEAR_FILTERS){
-        return {
-            ...state,  
-            search: '',
-            searchStatus: 'all',
-            searchType: 'all',
-            sort: 'latest',           
-        }
-    }*/
-    /*if(action.type === CHANGE_PAGE){
-        return {
-            ...state,  
-            page: action.payload.page 
-                     
-        }
-    }*/
     //Appointemnts
     if(action.type === ADD_SERVICE_BEGIN){
         return {...state, isLoading: true}

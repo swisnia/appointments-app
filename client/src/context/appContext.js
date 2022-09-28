@@ -171,42 +171,12 @@ const AppProvider = ({ children }) => {
         dispatch({type: LOGOUT_USER})
         removeUserFromLocalStorage()
     }
-    /*const updateUser = async (currentUser) => {
-        dispatch({type: UPDATE_USER_BEGIN})
-        try {
-            const {data} = await authFetch.patch('auth/updateUser', currentUser)
-            const { user, location, token } = data
-
-            dispatch({
-                type: UPDATE_USER_SUCCESS,
-                payload: {user, location, token}
-            })
-            addUserToLocalStorage({user, location, token})
-        } catch (error) {
-            if(error.response.status !== 401){
-                dispatch({
-                    type: UPDATE_USER_ERROR,
-                    payload: {msg: error.response.data.msg} 
-                })
-            }
-        }
-        clearAlert()
-    }*/
     const handleChange = ({name, value}) => {
         dispatch({
             type: HANDLE_CHANGE,
             payload: {name, value}
         })
     }
-    /*const clearValues = () => {
-        dispatch({
-            type: CLEAR_VALUES           
-        })
-    }
-    const changePage = (page) => {
-        dispatch({type: CHANGE_PAGE, payload: {page: page}})
-    }*/
-
     /*APPOINTMENTS*/
     const addService = async (service) => {
         dispatch({type: ADD_SERVICE_BEGIN})
