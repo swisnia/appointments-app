@@ -58,12 +58,13 @@ const Calendar = () => {
     setValues({...values, date: date})
   }
   const showAlert = (e) => {
-    const appointmentId = e.target.parentElement.id
+    let appointmentId = e.target.parentElement.id
+    if(!appointmentId) appointmentId = e.target.parentElement.parentElement.id
     setValues({...values, removeAppointmentId: appointmentId, showYesOrNotAlert: true})
   }
   const removeAppointment = () => {
     deleteAppointment(values.removeAppointmentId)
-    setValues({...values, showYesOrNotAlert: false})
+    setValues({...values, showYesOrNotAlert: false}) 
   }
   return (
     <Wrapper>

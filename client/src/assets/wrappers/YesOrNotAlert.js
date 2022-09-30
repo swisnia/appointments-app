@@ -23,6 +23,7 @@ const Wrapper = styled.section `
         display: flex;
         flex-direction: row;
         margin-top: 1.5rem;
+        margin-bottom: 0;
     }
     .btn{
         min-width: 120px;

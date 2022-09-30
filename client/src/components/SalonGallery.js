@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useAppContext } from '../context/appContext'
+import {YesOrNotAlert} from '../components'
 
 const SalonGallery = ({salonImages}) => {
   const [images, setImages] = useState()
+  const [showAlert, setShowAlert] = useState(false)
+  const [deleteImageId, setDeleteImageId] = useState()
   const {reduceImageFileSize, addNewSalonImage, deleteSalonImg} = useAppContext()
 
   const handleImage = (e) => {
@@ -17,13 +20,18 @@ const SalonGallery = ({salonImages}) => {
     }
     e.target.value = null
   }
-  const saveImg = () => {
+  const saveImg = (e) => {
     const newImage = images[images.length - 1]
     addNewSalonImage(newImage)
   }
-  const deleteImg = (e) => {
+  const setImageToDelete = (e) => {
     const id = e.target.id
-    deleteSalonImg(id)
+    setDeleteImageId(id)
+    setShowAlert(true)
+  }
+  const deleteImg = () => {
+    deleteSalonImg(deleteImageId)
+    setShowAlert(false)
   }
   useEffect(() => {
     setImages(salonImages)
@@ -31,6 +39,13 @@ const SalonGallery = ({salonImages}) => {
   
   return (
     <div className='gallery-container'> 
+      {showAlert && 
+        <YesOrNotAlert 
+          alertText='Czy na pewno chcesz usunąć to zdjęcie?'
+          onYes={deleteImg}
+          onNot={()=> setShowAlert(false)}
+        />
+      }
       {images && images.map((e) => {
         return(
           <div className='img-container' key={e._id}>
@@ -46,7 +61,7 @@ const SalonGallery = ({salonImages}) => {
                 id={e._id}
                 type='button'
                 className='btn btn-block btn-delete-img'
-                onClick={deleteImg}
+                onClick={setImageToDelete}
               >
                 Usuń to zdjęcie
               </button>

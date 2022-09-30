@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Wrapper from '../../assets/wrappers/Services'
-import { SingleService, AddService } from '../../components'
+import { SingleService, AddService, YesOrNotAlert } from '../../components'
 import { useAppContext } from '../../context/appContext'
 import {AiOutlineDown} from 'react-icons/ai'
 
@@ -8,6 +8,7 @@ const Services = () => {
   const {firm, deleteServices} = useAppContext()
   const [showAddService, setShowAddService] = useState(false)
   const [servicesToDelete, setServicesToDelete] = useState([])
+  const [showAlert, setShowAlert] = useState(false)
 
   const sortServices = () => {
     let newServices = []
@@ -54,8 +55,20 @@ const Services = () => {
     if(!Array.isArray(servicesToDelete) || servicesToDelete.indexOf(_id) === -1) return false
     else return true
   }
+  const removeServices = () => {
+    deleteServices(servicesToDelete) 
+    setServicesToDelete([])
+    setShowAlert(false)
+  }
   return (
     <Wrapper>
+      {showAlert&& 
+        <YesOrNotAlert 
+          alertText='Czy na pewno chcesz usunąć te usługi?'
+          onYes={removeServices}
+          onNot={()=> setShowAlert(false)}
+        />
+      }
       <h4>Usługi</h4>
       <header>
         <SingleService 
@@ -111,9 +124,7 @@ const Services = () => {
         <button
           type='button'
           className='btn btn-ghost'
-          onClick={() => {
-            deleteServices(servicesToDelete) 
-            setServicesToDelete([])}}
+          onClick={() => setShowAlert(true)}
           disabled={servicesToDelete.length === 0}
         >
           Usuń zaznaczone

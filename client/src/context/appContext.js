@@ -11,12 +11,7 @@ import {
     LOGIN_USER_ERROR,
     TOGGLE_SIDEBAR,
     LOGOUT_USER,
-    /*UPDATE_USER_BEGIN,
-    UPDATE_USER_SUCCESS,
-    UPDATE_USER_ERROR,*/
     HANDLE_CHANGE,
-    /*CLEAR_VALUES,
-    CHANGE_PAGE,*/
     //APPOINTMENTS
     ADD_SERVICE_BEGIN,
     ADD_SERVICE_SUCCESS,
@@ -476,10 +471,7 @@ const AppProvider = ({ children }) => {
             loginUser, 
             toggleSidebar, 
             logutUser, 
-            //updateUser, 
             handleChange, 
-            //clearValues,
-            //changePage,
             //Appointments
             addService,
             deleteServices,
