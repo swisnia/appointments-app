@@ -214,17 +214,23 @@ const addNewAppointment = async (req, res, next) => {
     try {
         const {date, service, time, hour, worker, customerName, serviceName} = req.body.newAppointment
 
-        if(!date || !service || !time || !hour || !worker || !serviceName){
-            throw new BadRequestError('Please provide all values')
-        }
+        // if(!date || !service || !time || !hour || !worker || !serviceName){
+        //     throw new BadRequestError('Please provide all values')
+        // }
         const {newAppointment} = req.body
         const firm = await Firm.findOne({_id: req.user.userId})
+        
+        firm.appointments.forEach(e => {
+            if(e.worker === worker && e.date === date && e.hour < hour + time && hour < e.hour + e.time){
+                throw new BadRequestError('This hour is not available')
+            }
+        })
 
         firm.appointments.push(newAppointment)
 
         await firm.save()
 
-        res.status(200).json({firm})
+        res.status(200).json({firm}) 
     } catch (error) {
         next(error)
     }
