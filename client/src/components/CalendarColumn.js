@@ -1,6 +1,6 @@
 import React, { useState,  useEffect} from 'react'
 import {BsTrash} from 'react-icons/bs'
-import { useAppContext } from '../context/appContext'
+//import { useAppContext } from '../context/appContext'
 
 const CalendarColumn = ({rows, appointments, workerId, open, close, date, removeAppointment}) => {
   const [workersAppointments, setWorkersAppointments] = useState()
@@ -37,7 +37,7 @@ const CalendarColumn = ({rows, appointments, workerId, open, close, date, remove
       })
       setWorkersAppointments(convertedAppointments)
     }
-
+    // eslint-disable-next-line
   }, [appointments, open, close, workerId, date])
   return (
     <div className='calendar-column'>

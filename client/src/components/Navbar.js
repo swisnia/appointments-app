@@ -3,7 +3,7 @@ import Wrapper from '../assets/wrappers/Navbar'
 import {FiLogOut} from 'react-icons/fi'
 import {GiHamburgerMenu} from 'react-icons/gi'
 import { useAppContext } from '../context/appContext'
-import Logo from './Logo'
+//import Logo from './Logo'
 
 
 const Navbar = () => {

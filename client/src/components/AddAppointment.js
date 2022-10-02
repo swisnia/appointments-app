@@ -125,7 +125,8 @@ const AddAppointment = ({services, workers, appointments, handleShowWindow, getO
         handleShowWindow()
     }
     useEffect(() => {
-        checkFreeHours()        
+        checkFreeHours()  
+        // eslint-disable-next-line      
     }, [values.date, values.service, values.worker])
     
   return (

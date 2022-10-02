@@ -1,7 +1,7 @@
 import React from 'react'
 import Wrapper from '../assets/wrappers/BigSidebar'
 import { useAppContext } from '../context/appContext'
-import Logo from './Logo'
+//import Logo from './Logo'
 import NavLinks from './NavLinks'
 
 const BigSidebar = () => {
