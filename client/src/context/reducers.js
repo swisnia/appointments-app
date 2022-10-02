@@ -31,6 +31,8 @@ import {
     UPDATE_WORKER_WORKING_HOURS_BEGIN,
     UPDATE_WORKER_WORKING_HOURS_SUCCESS,
     UPDATE_WORKER_WORKING_HOURS_ERROR,
+    DELETE_WORKER_BEGIN,
+    DELETE_WORKER_SUCCESS,
     UPDATE_SALON_DATA_BEGIN,
     UPDATE_SALON_DATA_SUCCESS,
     UPDATE_SALON_DATA_ERROR,
@@ -243,6 +245,19 @@ const reducer = (state, action) => {/*action ustawiam za pomoca dispatch*/
             showAlert: true,
             alertType: 'danger',
             alertText: action.payload.msg
+        }
+    }
+    if(action.type ===DELETE_WORKER_BEGIN){
+        return {...state, isLoading: true}
+    }
+    if(action.type === DELETE_WORKER_SUCCESS){
+        return {
+            ...state, 
+            isLoading: false,
+            firm: action.payload.firm,
+            showAlert: true,
+            alertType: 'success',
+            alertText: 'Pracownik został usunięty'
         }
     }
     if(action.type === UPDATE_SALON_DATA_BEGIN){

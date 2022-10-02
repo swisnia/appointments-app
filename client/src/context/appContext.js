@@ -27,6 +27,8 @@ import {
     UPDATE_WORKER_WORKING_HOURS_BEGIN,
     UPDATE_WORKER_WORKING_HOURS_SUCCESS,
     UPDATE_WORKER_WORKING_HOURS_ERROR,
+    DELETE_WORKER_BEGIN,
+    DELETE_WORKER_SUCCESS,
     UPDATE_SALON_DATA_BEGIN,
     UPDATE_SALON_DATA_SUCCESS,
     UPDATE_SALON_DATA_ERROR,
@@ -342,6 +344,21 @@ const AppProvider = ({ children }) => {
         } 
         clearAlert()
     }
+    const deleteWorker = async (id) => {
+        dispatch({type: DELETE_WORKER_BEGIN})
+        try {
+            const { data } = await authFetch.delete(`firm/workers?id=${id}`)
+            dispatch({type: DELETE_WORKER_SUCCESS, 
+                payload: {
+                    firm: data.firm,
+                }})
+            updateFirmInLocalStortage(data.firm)
+            //clearValues()
+        } catch (error) {
+            if(error.response.status === 401) return
+        }
+        clearAlert()
+    }
     const updateSalonData = async (newData) => {
         dispatch({type: UPDATE_SALON_DATA_BEGIN})
         try {
@@ -480,6 +497,7 @@ const AppProvider = ({ children }) => {
             reduceImageFileSize,
             updateWorkerServices,
             updateWorkerWorkingHours,
+            deleteWorker,
             updateSalonData,
             updateSalonOpeningHours,
             addNewSalonImage,

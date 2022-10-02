@@ -38,7 +38,8 @@ const Wrapper = styled.section`
         color: var(--secondary-400) 
     }
     .content{
-        /*padding: 2rem;*/
+        display: flex;
+        flex-direction: column;
     }
     .photo-and-about-container{
         padding: 2rem;
@@ -123,6 +124,19 @@ const Wrapper = styled.section`
     }
     .day-container input {
         height: 40px;
+    }
+    .btn-delete-worker{
+        border: none;
+        background-color: var(--white);
+        color: var(--secondary-400);
+        text-decoration: underline;
+        align-self: flex-end;
+        margin-right: 2rem;
+        margin-top: 2rem;
+    }
+    .btn-delete-worker:hover{
+        cursor: pointer;
+        color: var(--secondary-500);
     }
     @media (min-width: 992px) {
         border: 1px solid var(--secondary-200);

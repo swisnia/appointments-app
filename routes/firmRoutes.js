@@ -8,6 +8,7 @@ import {
     updateWorkerData, 
     updateWorkerServices, 
     updateWorkerWorkingHours,
+    deleteWorker,
     updateSalonData,
     updateSalonOpeningHours,
     addNewSalonImg,
@@ -20,7 +21,7 @@ import validateAppointemnt from '../middleware/validate-appointment.js'
 
 router.route('/').get(authenticateUser, getAppointments)
 router.route('/services').patch(authenticateUser, addService).delete(authenticateUser, deleteServices)
-router.route('/workers').patch(authenticateUser, addWorker)
+router.route('/workers').patch(authenticateUser, addWorker).delete(authenticateUser, deleteWorker)
 router.route('/workers/data').patch(authenticateUser, updateWorkerData)
 router.route('/workers/services').patch(authenticateUser, updateWorkerServices)
 router.route('/workers/workingHours').patch(authenticateUser, updateWorkerWorkingHours)

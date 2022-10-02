@@ -138,6 +138,23 @@ const updateWorkerWorkingHours = async (req, res, next) => {
         next(error)
     }
 }
+const deleteWorker = async (req, res, next) => {
+    try {
+        const id = req.query.id
+        if(!id){
+            throw new BadRequestError('Please provide image id')
+        }
+        await Firm.findOneAndUpdate({
+            _id: req.user.userId,
+        }, {
+            $pull: {"workers": {_id: id}}
+        })
+        const firm = await Firm.findOne({_id: req.user.userId})
+        res.status(200).json({firm})
+    } catch (error) {
+      next(error)  
+    }
+}
 const updateSalonData = async (req, res, next) => {
     try {
         const {companyName,businessOwner,about,adress} = req.body
@@ -266,5 +283,6 @@ export {
     addNewSalonImg,
     deleteSalonImg,
     addNewAppointment,
-    deleteAppointment
+    deleteAppointment,
+    deleteWorker
 }

@@ -4,7 +4,8 @@ import {
   WorkerData, 
   WorkerServices, 
   WorkingHours,
-  AddWorker 
+  AddWorker,
+  YesOrNotAlert 
 } from '../../components'
 import Wrapper from '../../assets/wrappers/Workers'
 import { useAppContext } from '../../context/appContext'
@@ -12,12 +13,13 @@ import { useAppContext } from '../../context/appContext'
 const initialState = {
   page: 1,
   currentWorker: '',
-  showAddWorker: false 
+  showAddWorker: false,
+  showAlert: false 
 }
 
 const Workers = () => {
   const [values, setValues] = useState(initialState)
-  const {firm} = useAppContext()
+  const {firm, deleteWorker} = useAppContext()
 
   const handlePage = (page) => {
     setValues({...values, page: page})
@@ -30,6 +32,14 @@ const Workers = () => {
   const toggleAddWorker = () => {
     setValues({...values, showAddWorker: !values.showAddWorker})
   }
+  const removeWorker = () => {
+    const workerId = values.currentWorker._id
+    deleteWorker(workerId)
+    handleAlert()
+  }
+  const handleAlert = () => {
+    setValues({...values, showAlert: !values.showAlert})
+  }
   useEffect(() => {
     setValues({...values, currentWorker: firm.workers[0]})
     // eslint-disable-next-line
@@ -37,6 +47,11 @@ const Workers = () => {
   
   return (
     <Wrapper>
+      {values.showAlert && <YesOrNotAlert 
+        alertText='Czy na pewno chcesz usunąć tego pracownika?'
+        onYes={removeWorker}
+        onNot={handleAlert}
+      />}
       {values.showAddWorker &&  
       <AddWorker 
         hideWindow={toggleAddWorker} 
@@ -85,6 +100,13 @@ const Workers = () => {
               services={firm.services}            
             />
           }
+          <button
+            type='button'
+            className='btn-delete-worker'
+            onClick={handleAlert}
+          >
+            Usuń pracownika
+          </button>
         </div>
       </nav>
     </Wrapper>
