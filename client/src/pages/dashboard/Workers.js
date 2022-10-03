@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { 
-  WorkersSidebar, 
+  WorkersSidebar,
+  WorkersSidebarSmall, 
   WorkerData, 
   WorkerServices, 
   WorkingHours,
@@ -63,6 +64,11 @@ const Workers = () => {
         showAddWorker = {toggleAddWorker}
       />
       <nav>
+        <WorkersSidebarSmall 
+          workers = {firm.workers}
+          setWorker = {setWorker}
+          showAddWorker = {toggleAddWorker}
+        />
         <div className='worker-nav'>
           <h5 
             onClick={() => {handlePage(1)}}

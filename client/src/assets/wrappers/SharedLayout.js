@@ -11,7 +11,9 @@ const Wrapper = styled.section`
     padding: 2rem 0;
   }
   @media (min-width: 992px) {*/
-  
+  .dashboard-page-container{
+    max-width: 100vw;
+  }
   .dashboard {
     display: grid;
     grid-template-columns: auto 1fr;

@@ -5,6 +5,24 @@ const Wrapper = styled.section`
     .workers-sidebar-big{
         display: none;
     }
+    .workers-sidebar-small{
+        display: flex;
+        align-items: center;
+        overflow-y: auto;
+        max-width: 100%;
+    }
+    .workers-sidebar-small .btn-container h6{
+        font-weight: bold;
+    }
+    .btn-add-worker{
+        height: 4rem;
+        width: 4rem;
+        min-height: 4rem;
+        min-width: 4rem;
+        border-radius: calc(50%);
+        font-size: 2rem;
+        margin-left: 2rem;
+    }
     .workers-sidebar-big .btn{
         width: 90%;
         margin: 1rem 5% 1rem 5%;
@@ -127,7 +145,7 @@ const Wrapper = styled.section`
     }
     .btn-delete-worker{
         border: none;
-        background-color: var(--white);
+        background-color: var(--white); 
         color: var(--secondary-400);
         text-decoration: underline;
         align-self: flex-end;
@@ -172,6 +190,9 @@ const Wrapper = styled.section`
             display: grid;
             grid-template-columns: 1fr 1fr;
             column-gap: 1rem;
+        }
+        .workers-sidebar-small{
+            display: none;
         }
     }
 `

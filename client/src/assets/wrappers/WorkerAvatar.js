@@ -11,7 +11,7 @@ const Wrapper = styled.section `
         background-color: var(--backgroundColor);
     }
     h6 {
-        font-weight: bold;
+        font-weight: bold; 
     }
     .avatar-img{
         height: 4rem;
@@ -23,6 +23,9 @@ const Wrapper = styled.section `
         padding-left: 0.75rem;
     }
     @media (max-width: 1249px) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         text-align: center;
     }
     @media (min-width: 1250px) {

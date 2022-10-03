@@ -14,7 +14,7 @@ const WorkersSidebar = ({workers, setWorker, showAddWorker}) => {
                     onClick={setWorker}
                 >
                     <WorkerAvatar                        
-                        name={worker.workerName}
+                        name={worker.workerName} 
                         position={worker.workerPosition}
                         photo={worker.workerPhoto}
                     />

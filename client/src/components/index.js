@@ -26,6 +26,7 @@ import CalendarSidebar from './CalendarSidebar'
 import CalendarColumn from './CalendarColumn'
 import AddAppointment from './AddAppointment'
 import YesOrNotAlert from './YesOrNotAlert'
+import WorkersSidebarSmall from './WorkersSidebarSmall'
 
 export {
     Logo, 
@@ -55,5 +56,6 @@ export {
     CalendarSidebar,
     CalendarColumn,
     AddAppointment,
-    YesOrNotAlert
+    YesOrNotAlert,
+    WorkersSidebarSmall
 }

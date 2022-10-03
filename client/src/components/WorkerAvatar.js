@@ -10,7 +10,7 @@ const WorkerAvatar = ({name, position, photo}) => {
             <img 
                 src={photo}
                 alt=''
-                className='avatar-img'
+                className='avatar-img' 
             />
         }
         {!photo &&
