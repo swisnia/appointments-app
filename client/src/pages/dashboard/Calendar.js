@@ -19,11 +19,11 @@ const Calendar = () => {
   const getOpeningHours = (weekday) => {
     const openHours = firm.openingHours[weekday].open.split(':')[0]
     const openMinutes = firm.openingHours[weekday].open.split(':')[1]
-    const open = parseInt(openHours) * 60 + parseInt(openMinutes)
+    const open = parseInt(openHours) * 60 + parseInt(openMinutes) 
 
     const closeHours = firm.openingHours[weekday].close.split(':')[0]
     const closeMinutes = firm.openingHours[weekday].close.split(':')[1]
-    const close = parseInt(closeHours) * 60 + parseInt(closeMinutes)
+    const close = parseInt(closeHours) * 60 + parseInt(closeMinutes) 
 
     const checked = firm.openingHours[weekday].checked
 
@@ -38,9 +38,9 @@ const Calendar = () => {
 
   const getRows = () => {
     let rows = []
-    let i = open
+    let i = open + (60 - (open % 60)) - 60//ustawia na godzine przed otwarciem i zaokrągla do równej godziny
 
-    while(i <= close){
+    while(i <= (close + 60) ){ //+60 ustawia na godzine po zamknięciu
         rows.push(`${parseInt(i/60)}:${('0' + (i%60)).slice(-2)}`)
         i += 30
     }
@@ -95,7 +95,7 @@ const Calendar = () => {
           />
       </div>
       <div className='workers-container'>
-        <h5 className='distance'>00:00</h5>
+        <h5 className='distance'>00:00</h5> 
         {firm.workers.map(e => {
           return(
            <h5 key={e._id} className='worker-name-txt'>

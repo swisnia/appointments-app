@@ -8,7 +8,7 @@ const CalendarColumn = ({rows, appointments, workerId, open, close, date, remove
 
   const getOneMinuteHeight = () => {
     const calendarSidebar = document.getElementById('calendar-sidebar').offsetHeight-50 //-height of cell with hour
-    const openingTime = close - open
+    const openingTime = close + (60 - (close % 60)) - open - (60 - (open % 60)) + 60 //counting time showed in sidebar
     return calendarSidebar/openingTime
   }
   const filteredAppointments = () => {
@@ -19,7 +19,7 @@ const CalendarColumn = ({rows, appointments, workerId, open, close, date, remove
   }
   const setAppointmentAttributes = (appointment, oneMinuteHeight) => {
     const height = appointment.time * oneMinuteHeight
-    const top = (appointment.hour - open) * oneMinuteHeight
+    const top = (appointment.hour - open + (open % 60)) * oneMinuteHeight
     return {...appointment , height: height, top: top}
   }
   const changeTimeFormat = (t) => {
@@ -28,7 +28,7 @@ const CalendarColumn = ({rows, appointments, workerId, open, close, date, remove
   // const removeAppointment = (e) => {
   //   const appointmentId = e.target.parentElement.id
   //   deleteAppointment(appointmentId)
-  // }
+  // } 
   useEffect(() => {
     const oneMinuteHeight = getOneMinuteHeight()
     if(appointments){
