@@ -1,14 +1,13 @@
 import React, { useState,  useEffect} from 'react'
 import {BsTrash} from 'react-icons/bs'
-//import { useAppContext } from '../context/appContext'
 
 const CalendarColumn = ({rows, appointments, workerId, open, close, date, removeAppointment}) => {
   const [workersAppointments, setWorkersAppointments] = useState()
-  // const {deleteAppointment} = useAppContext()
+  const [emptyArea, setEmptyArea] = useState()
 
   const getOneMinuteHeight = () => {
-    const calendarSidebar = document.getElementById('calendar-sidebar').offsetHeight-50 //-height of cell with hour
-    const openingTime = close + (60 - (close % 60)) - open - (60 - (open % 60)) + 60 //counting time showed in sidebar
+    const calendarSidebar = document.getElementById('calendar-sidebar').offsetHeight
+    const openingTime = rows.length * 30//counting time showed in sidebar 
     return calendarSidebar/openingTime
   }
   const filteredAppointments = () => {
@@ -19,18 +18,26 @@ const CalendarColumn = ({rows, appointments, workerId, open, close, date, remove
   }
   const setAppointmentAttributes = (appointment, oneMinuteHeight) => {
     const height = appointment.time * oneMinuteHeight
-    const top = (appointment.hour - open + (open % 60)) * oneMinuteHeight
+    const top = (appointment.hour - open + (open % 30) + 30) * oneMinuteHeight
     return {...appointment , height: height, top: top}
   }
   const changeTimeFormat = (t) => {
     return `${parseInt(t/60)}:${('00' + t%60).slice(-2)}`
   }
-  // const removeAppointment = (e) => {
-  //   const appointmentId = e.target.parentElement.id
-  //   deleteAppointment(appointmentId)
-  // } 
+  const setEmptyAreaAttributes = (oneMinuteHeight) => {
+    const beforeOpenHeight = ((open % 30) + 30) * oneMinuteHeight
+    const afterCloseTop = ((close - open) * oneMinuteHeight) + beforeOpenHeight
+    const afterCloseHeight = (90 - (close % 30)) * oneMinuteHeight
+
+    const beforeOpen = {top: 0, height: beforeOpenHeight}
+    const afterClose = {top: afterCloseTop, height: afterCloseHeight}
+
+    return [beforeOpen, afterClose]
+  }
+
   useEffect(() => {
     const oneMinuteHeight = getOneMinuteHeight()
+    setEmptyArea(setEmptyAreaAttributes(oneMinuteHeight))
     if(appointments){
       const convertedAppointments = filteredAppointments().map(e => {
         return setAppointmentAttributes(e, oneMinuteHeight)
@@ -46,6 +53,19 @@ const CalendarColumn = ({rows, appointments, workerId, open, close, date, remove
                 <div className='calendar-row' key={index}> 
                 </div>
             )
+        })}
+        {emptyArea && emptyArea.map((e, index) => {
+          return(
+            <div 
+              className='empty-area'
+              key={index}
+              style={{
+                height: `${e.height}px`,
+                top: `${e.top}px`
+              }}
+            >
+            </div>
+          )
         })}
         {workersAppointments && workersAppointments.map(e => {
           return (
@@ -67,10 +87,8 @@ const CalendarColumn = ({rows, appointments, workerId, open, close, date, remove
               <BsTrash 
                 className='delete-appointment-btn'
                 onClick={removeAppointment}
-              />
-
-              
-              </div>
+              />              
+            </div>
           )
         })}
     </div>

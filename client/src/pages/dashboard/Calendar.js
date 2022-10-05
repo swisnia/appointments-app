@@ -38,7 +38,7 @@ const Calendar = () => {
 
   const getRows = () => {
     let rows = []
-    let i = open + (60 - (open % 60)) - 60//ustawia na godzine przed otwarciem i zaokrągla do równej godziny
+    let i = open - (open % 30) - 30//ustawia na godzine przed otwarciem i zaokrągla do równej godziny
 
     while(i <= (close + 60) ){ //+60 ustawia na godzine po zamknięciu
         rows.push(`${parseInt(i/60)}:${('0' + (i%60)).slice(-2)}`)

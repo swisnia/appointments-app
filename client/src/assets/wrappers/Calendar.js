@@ -83,7 +83,7 @@ const Wrapper = styled.aside`
         align-self: flex-end;
     }
     .delete-appointment-btn:hover{
-        cursor: pointer;
+        cursor: pointer; 
     }
     .service-name{
         font-weight: bold;
@@ -97,6 +97,11 @@ const Wrapper = styled.aside`
         margin-right: 1.5rem;
         float: right;
         width: fit-content;
+    }
+    .empty-area{
+        position: absolute;
+        width: 100%;
+        background-color: var(--grey-100);
     }
     @media (min-width: 992px) {
         height: 100%;
