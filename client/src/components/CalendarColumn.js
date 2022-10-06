@@ -1,14 +1,26 @@
 import React, { useState,  useEffect} from 'react'
 import {BsTrash} from 'react-icons/bs'
 
-const CalendarColumn = ({rows, appointments, workerId, open, close, date, removeAppointment}) => {
+const CalendarColumn = (
+  { rows, 
+    appointments,
+    workerId, 
+    open, 
+    close, 
+    date, 
+    removeAppointment, 
+    workerStart, 
+    workerFinish,
+    calendarSidebarHeight,
+    isWorking }) => {
+
   const [workersAppointments, setWorkersAppointments] = useState()
   const [emptyArea, setEmptyArea] = useState()
 
   const getOneMinuteHeight = () => {
-    const calendarSidebar = document.getElementById('calendar-sidebar').offsetHeight
+    //const calendarSidebar = document.getElementById('calendar-sidebar').offsetHeight
     const openingTime = rows.length * 30//counting time showed in sidebar 
-    return calendarSidebar/openingTime
+    return calendarSidebarHeight/openingTime
   }
   const filteredAppointments = () => {
     const filtered = appointments.filter(e => { 
@@ -25,9 +37,16 @@ const CalendarColumn = ({rows, appointments, workerId, open, close, date, remove
     return `${parseInt(t/60)}:${('00' + t%60).slice(-2)}`
   }
   const setEmptyAreaAttributes = (oneMinuteHeight) => {
-    const beforeOpenHeight = ((open % 30) + 30) * oneMinuteHeight
-    const afterCloseTop = ((close - open) * oneMinuteHeight) + beforeOpenHeight
-    const afterCloseHeight = (90 - (close % 30)) * oneMinuteHeight
+    //const calendarSidebar = document.getElementById('calendar-sidebar').offsetHeight
+    if(!isWorking){
+      const beforeOpen = {top: 0, height: calendarSidebarHeight}
+      const afterClose = {top: 0, height: 0}
+
+      return [beforeOpen, afterClose]
+    }
+    const beforeOpenHeight = (workerStart - open + (open % 30) + 30) * oneMinuteHeight
+    const afterCloseTop = (workerFinish - open + (open % 30) + 30) * oneMinuteHeight
+    const afterCloseHeight = calendarSidebarHeight - afterCloseTop
 
     const beforeOpen = {top: 0, height: beforeOpenHeight}
     const afterClose = {top: afterCloseTop, height: afterCloseHeight}

@@ -101,7 +101,7 @@ const Wrapper = styled.aside`
     .empty-area{
         position: absolute;
         width: 100%;
-        background-color: var(--grey-100);
+        background-color: var(--transparent-background);
     }
     @media (min-width: 992px) {
         height: 100%;

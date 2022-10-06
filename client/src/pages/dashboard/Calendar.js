@@ -1,4 +1,4 @@
-import React,{ useState } from 'react'
+import React,{ useRef, useState } from 'react'
 import { useAppContext } from '../../context/appContext'
 import Wrapper from '../../assets/wrappers/Calendar'
 import { CalendarSidebar, CalendarColumn, AddAppointment, YesOrNotAlert} from '../../components'
@@ -15,17 +15,18 @@ const initialState = {
 const Calendar = () => {
   const {firm, deleteAppointment} = useAppContext()
   const [values, setValues] = useState(initialState)
+  const sidebar = useRef()
   
-  const getOpeningHours = (weekday) => {
-    const openHours = firm.openingHours[weekday].open.split(':')[0]
-    const openMinutes = firm.openingHours[weekday].open.split(':')[1]
+  const getOpeningHours = (openingHours, weekday) => {
+    const openHours = openingHours[weekday].open.split(':')[0]
+    const openMinutes = openingHours[weekday].open.split(':')[1]
     const open = parseInt(openHours) * 60 + parseInt(openMinutes) 
 
-    const closeHours = firm.openingHours[weekday].close.split(':')[0]
-    const closeMinutes = firm.openingHours[weekday].close.split(':')[1]
+    const closeHours = openingHours[weekday].close.split(':')[0]
+    const closeMinutes = openingHours[weekday].close.split(':')[1]
     const close = parseInt(closeHours) * 60 + parseInt(closeMinutes) 
 
-    const checked = firm.openingHours[weekday].checked
+    const checked = openingHours[weekday].checked
 
     return [open, close, checked]
   }
@@ -34,7 +35,7 @@ const Calendar = () => {
     weekday > 0 ? weekday -= 1 : weekday = 6
     return weekday
   }
-  const [open, close] = getOpeningHours(getWeekday())
+  const [open, close] = getOpeningHours(firm.openingHours, getWeekday())
 
   const getRows = () => {
     let rows = []
@@ -104,11 +105,13 @@ const Calendar = () => {
           )
         })}
       </div>
-      <div className='timetable-container'>
+      <div ref={sidebar} className='timetable-container'>
         <CalendarSidebar 
           rows = {getRows()}
         />
         {firm.workers.map((e) => {
+          const [start, finish, isWorking] = getOpeningHours(e.workingHours, getWeekday())
+          
           return(
             <CalendarColumn 
               key={e._id}
@@ -117,8 +120,12 @@ const Calendar = () => {
               workerId={e._id}
               open={open}
               close={close}
+              workerStart={start}
+              workerFinish={finish}
+              isWorking={isWorking}
               date={moment(values.date).format('YYYY-MM-DD')}
               rows={getRows()}
+              calendarSidebarHeight = {sidebar.current.offsetHeight}
               removeAppointment={showAlert}
             />
           )
