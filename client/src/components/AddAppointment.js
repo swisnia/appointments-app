@@ -48,11 +48,13 @@ const AddAppointment = ({services, workers, appointments, handleShowWindow, getO
         let filteredAppointments = appointments.filter(e => {
             return e.date === values.date && e.worker === values.worker
         })
+        //getting worker index
+        const workerIndex = workers.findIndex(e => e._id === values.worker)
 
         //sorting appointments
         filteredAppointments.sort((a,b) => {return a.hour - b.hour})
 
-        const [open, close, checked] = getOpeningHours(weekday)
+        const [open, close, checked] = getOpeningHours(workers[workerIndex].workingHours, weekday)
         let t = open
         //checking if salon i open
         if(!checked){

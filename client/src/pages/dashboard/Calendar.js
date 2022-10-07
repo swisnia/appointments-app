@@ -15,7 +15,7 @@ const initialState = {
 const Calendar = () => {
   const {firm, deleteAppointment} = useAppContext()
   const [values, setValues] = useState(initialState)
-  const sidebar = useRef()
+  const sidebar = useRef(0)
   
   const getOpeningHours = (openingHours, weekday) => {
     const openHours = openingHours[weekday].open.split(':')[0]
