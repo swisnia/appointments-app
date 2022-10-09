@@ -242,12 +242,9 @@ const deleteSalonImg = async (req, res, next) => {
 }
 const addNewAppointment = async (req, res, next) => {
     try {
-        const {date, service, time, hour, worker, customerName, serviceName} = req.body.newAppointment
-
-        // if(!date || !service || !time || !hour || !worker || !serviceName){
-        //     throw new BadRequestError('Please provide all values')
-        // }
+        const {date, time, hour, worker} = req.body.newAppointment
         const {newAppointment} = req.body
+
         const firm = await Firm.findOne({_id: req.user.userId})
         
         firm.appointments.forEach(e => {
@@ -255,9 +252,21 @@ const addNewAppointment = async (req, res, next) => {
                 throw new BadRequestError('This hour is not available')
             }
         })
+        const workerIndex = firm.workers.findIndex(e => String(e._id) === String(worker))
+        let dayIndex = moment(date).day()
+        dayIndex = dayIndex === 0 ? dayIndex = 6 : dayIndex = dayIndex -1
+        const choosenWorker = firm.workers[workerIndex]
+        const workerWorkingHours = choosenWorker.workingHours[dayIndex]
+        const workerStart = moment(workerWorkingHours.open, 'h:mm')
+        const workerFinish = moment(workerWorkingHours.close, 'h:mm')
+        const appointmentStart = moment(changeTimeFormat(hour), 'h:mm')
+        const appointmentFinish = moment(changeTimeFormat(hour+time), 'h:mm')
+
+        if(appointmentStart.isBefore(workerStart) || appointmentFinish.isAfter(workerFinish)){
+            throw new BadRequestError('Appointment time must be in worker working hours')
+        }
 
         firm.appointments.push(newAppointment)
-
         await firm.save()
 
         res.status(200).json({firm}) 
@@ -282,6 +291,10 @@ const deleteAppointment = async (req, res, next) => {
     } catch (error) {
         next(error)
     }
+}
+
+const changeTimeFormat = (t) => {
+    return `${parseInt(t/60)}:${('00' + t%60).slice(-2)}`
 }
 export {
     getAppointments, 
