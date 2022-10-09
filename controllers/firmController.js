@@ -122,17 +122,30 @@ const updateWorkerServices = async (req, res, next) => {
 const updateWorkerWorkingHours = async (req, res, next) => {
     try {
         const {_id, workingHours} = req.body
-        if(!_id || !workingHours){
-            throw new BadRequestError('Please provide all values')
-        } 
-        await Firm.findOneAndUpdate({
-            _id: req.user.userId,
-            "workers._id": _id
-        }, {
-            $set: {"workers.$.workingHours": workingHours}            
-        })
+
         const firm = await Firm.findOne({_id: req.user.userId})
-        //findOneAndUpdate is returning object before update!!!
+        const workerIndex = firm.workers.findIndex(e => String(e._id) === String(_id))
+        const firmOpeningHours = firm.openingHours
+
+        firmOpeningHours.map((e, i) => {
+            const workerStart = moment(workingHours[i].open, 'h:mm')
+            const firmStart = moment(e.open, 'h:mm')
+            const workerFinish = moment(workingHours[i].close, 'h:mm')
+            const firmFinish = moment(e.close, 'h:mm')
+            
+            if(workerStart.isBefore(firmStart)){
+                throw new BadRequestError('You can not set hour before salon opening')
+            }
+            if(workerFinish.isAfter(firmFinish)){
+                throw new BadRequestError('You can not set hour after salon closing')
+            }
+            if(workingHours[i].checked !== e.checked){
+                throw new BadRequestError('You can not set worker working when salon is closed')
+            }
+        })
+        firm.workers[workerIndex].workingHours = workingHours
+        await firm.save()
+
         res.status(200).json({firm, workers: firm.workers})
     } catch (error) {
         next(error)
