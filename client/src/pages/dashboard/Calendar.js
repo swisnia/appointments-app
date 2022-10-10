@@ -2,8 +2,11 @@ import React,{ useRef, useState } from 'react'
 import { useAppContext } from '../../context/appContext'
 import Wrapper from '../../assets/wrappers/Calendar'
 import { CalendarSidebar, CalendarColumn, AddAppointment, YesOrNotAlert} from '../../components'
+import DatePicker from 'react-datepicker'
+import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment'
 import {AiOutlineArrowLeft, AiOutlineArrowRight} from 'react-icons/ai'
+import {IoCalendarOutline} from 'react-icons/io5'
 
 const initialState = {
   show: false,
@@ -16,6 +19,7 @@ const Calendar = () => {
   const {firm, deleteAppointment} = useAppContext()
   const [values, setValues] = useState(initialState)
   const sidebar = useRef(0)
+  const datePicker = useRef()
   
   const getOpeningHours = (openingHours, weekday) => {
     const openHours = openingHours[weekday].open.split(':')[0]
@@ -58,6 +62,10 @@ const Calendar = () => {
     const date = moment(values.date).add(1, 'days')
     setValues({...values, date: date})
   }
+  const setDate = (date) => {
+    const newDate = moment(date)
+    setValues({...values, date: newDate})
+  }
   const showAlert = (e) => {
     let appointmentId = e.target.parentElement.id
     if(!appointmentId) appointmentId = e.target.parentElement.parentElement.id
@@ -66,6 +74,9 @@ const Calendar = () => {
   const removeAppointment = () => {
     deleteAppointment(values.removeAppointmentId)
     setValues({...values, showYesOrNotAlert: false}) 
+  }
+  const pickADate = () => {
+    datePicker.current.setOpen(true)
   }
   return (
     <Wrapper>
@@ -88,7 +99,15 @@ const Calendar = () => {
           <AiOutlineArrowLeft 
             name='previous'
             onClick={prevDay}
-          />
+          /> 
+            <IoCalendarOutline 
+              onClick={pickADate}
+            />
+            <DatePicker 
+              id='date-picker'
+              ref={datePicker}
+              onChange={(date) => setDate(date)}
+            />
             {moment(values.date).format('dddd, DD.MM.YYYY')}
           <AiOutlineArrowRight 
             name='next'

@@ -103,6 +103,12 @@ const Wrapper = styled.aside`
         width: 100%;
         background-color: var(--transparent-background);
     }
+    #date-picker{
+        display: none;
+    }
+    .react-datepicker-wrapper{
+        width: 0;
+    }
     @media (min-width: 992px) {
         height: 100%;
         overflow-y: auto;

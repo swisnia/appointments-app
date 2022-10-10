@@ -195,7 +195,6 @@ const updateSalonOpeningHours = async (req, res, next) => {
             throw new BadRequestError('Please provide all values')
         }
         const firm = await Firm.findOne({_id: req.user.userId})
-        const workers = firm.workers
 
         firm.workers.map(worker => {
             worker.workingHours.map((e, i) => {
