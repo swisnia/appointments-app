@@ -195,6 +195,26 @@ const updateSalonOpeningHours = async (req, res, next) => {
             throw new BadRequestError('Please provide all values')
         }
         const firm = await Firm.findOne({_id: req.user.userId})
+        const workers = firm.workers
+
+        firm.workers.map(worker => {
+            worker.workingHours.map((e, i) => {
+                const workerStart = moment(e.open, 'h:mm')
+                const firmStart = moment(openingHours[i].open, 'h:mm')
+                const workerFinish = moment(e.close, 'h:mm')
+                const firmFinish = moment(openingHours[i].close, 'h:mm')
+
+                if(firmStart.isAfter(workerStart)){
+                    e.open = openingHours[i].open
+                }
+                if(firmFinish.isBefore(workerFinish)){
+                    e.close = openingHours[i].close
+                }
+                if(e.checked && !openingHours[i].checked){
+                    e.checked = false
+                }
+            })
+        })
 
         firm.openingHours = openingHours
 
