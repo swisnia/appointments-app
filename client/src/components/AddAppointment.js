@@ -8,7 +8,7 @@ import { useEffect } from 'react'
 
 const initialState = {
     customerName: '',
-    //worker: '',
+    worker: 'anyworker',
     serviceName:  '',
     date: moment().format('YYYY-MM-DD') || '2022-01-01', 
     appointmentHour: '', 
@@ -17,22 +17,19 @@ const initialState = {
 const AddAppointment = ({services, workers, appointments, handleShowWindow, getOpeningHours}) => {
     const [values, setValues] = useState({
         ...initialState, 
-        worker: workers.length > 0 ? workers[0]._id : '', 
+        //worker: workers.length > 0 ? workers[0]._id : '', 
         service: services.length > 0 ? services[0]._id : '',
         serviceName: services.length > 0 ? services[0].serviceName : ''
     })
     const {addNewAppointment} = useAppContext()
 
     const checkFreeHours = () => {
-        let freeHours = []
 
         if(!values.date || !values.service || !values.worker || 
             !(moment().isSameOrBefore(values.date, 'day'))){ //check if date is in the future
-
-            setValues({...values, freeHours: freeHours})
+            setValues({...values, freeHours: []})
             return
         }
-        
         //Get day of a week
         let weekday = new Date(values.date).getDay()
         weekday === 0 ? weekday = 6 : weekday -= 1
@@ -44,23 +41,95 @@ const AddAppointment = ({services, workers, appointments, handleShowWindow, getO
         let serviceTime = service[0].serviceTime
         serviceTime = parseInt(serviceTime.split(':')[0])*60 + parseInt(serviceTime.split(':')[1])
 
-        //filter all appointments by date and worker
-        let filteredAppointments = appointments.filter(e => {
-            return e.date === values.date && e.worker === values.worker
-        })
         //getting worker index
         const workerIndex = workers.findIndex(e => e._id === values.worker)
+        //if any worker choosen
+        if(workerIndex === -1){
+            let freeHours = []
+            workers.forEach((workerEl, workerInd) => {
+                //filter all appointments by date and worker
+                const filteredAppointments = appointments.filter(e => {
+                    return e.date === values.date && e.worker === workerEl._id          
+                })
+                //sorting appointments
+                filteredAppointments.sort((a,b) => {return a.hour - b.hour})
+                const workerFreeHours = getFreeHours(filteredAppointments, workers, workerInd, weekday, serviceTime)
 
+                const filteredWorkerkFreehours = workerFreeHours.filter(e => {
+                    return freeHours.indexOf(e) === -1
+                })
+                freeHours = [...freeHours, ...filteredWorkerkFreehours]
+            })
+            freeHours.sort((a,b) => {return a - b})
+            setValues({...values, freeHours: freeHours, time: serviceTime})
+            return
+        }
+        
+        //filter all appointments by date and worker
+        const filteredAppointments = appointments.filter(e => {
+            return e.date === values.date && e.worker === values.worker          
+        })
         //sorting appointments
         filteredAppointments.sort((a,b) => {return a.hour - b.hour})
+        
+        const freeHours = getFreeHours(filteredAppointments, workers, workerIndex, weekday, serviceTime)
+
+        // const [open, close, checked] = getOpeningHours(workers[workerIndex].workingHours, weekday)
+        // let t = open
+        // //checking if salon i open
+        // if(!checked){
+        //     setValues({...values, freeHours: freeHours})
+        //     return
+        // }
+        // if(moment().isSame(values.date, 'day')){
+        //     let now = moment().format('HH:mm')
+        //     now = parseInt(now.split(':')[0])*60 + parseInt(now.split(':')[1])
+        //     //checking if time is before closing
+        //     if(now < close) {
+        //         //setting counter for now
+        //         t = now
+        //         //filter appointments after now
+        //         filteredAppointments = filteredAppointments.filter(e => {
+        //             return e.hour >= t
+        //         })
+        //     } else {
+        //         setValues({...values, freeHours: freeHours})
+        //         return
+        //     }
+                
+        // }
+        // if(filteredAppointments.length > 0){
+        //     filteredAppointments.forEach((e) =>{ 
+        //         //getting all free hours between all appointments
+        //         while(t <= close - serviceTime && t <= e.hour-serviceTime){
+    
+        //             if(!freeHours.includes(t)) freeHours.push(t)
+        //             t += 15 //increase counter
+        //         }
+        //         t = e.hour + e.time //set timer for end of appointment
+        //     })
+        //     //getting free hours after last appointment
+        //     while(t <= close - serviceTime ){
+        //         if(!freeHours.includes(t)) freeHours.push(t)
+        //         t += 15
+        //     }
+        // } else {
+        //     while(t <= close - serviceTime ){
+
+        //         if(!freeHours.includes(t)) freeHours.push(t)
+        //         t += 15
+        //     }
+        // }
+
+        setValues({...values, freeHours: freeHours, time: serviceTime})
+    }
+    const getFreeHours = (filteredAppointments, workers, workerIndex, weekday, serviceTime) => {
+        let freeHours = []
 
         const [open, close, checked] = getOpeningHours(workers[workerIndex].workingHours, weekday)
         let t = open
         //checking if salon i open
-        if(!checked){
-            setValues({...values, freeHours: freeHours})
-            return
-        }
+        if(!checked) return freeHours        
         if(moment().isSame(values.date, 'day')){
             let now = moment().format('HH:mm')
             now = parseInt(now.split(':')[0])*60 + parseInt(now.split(':')[1])
@@ -73,10 +142,8 @@ const AddAppointment = ({services, workers, appointments, handleShowWindow, getO
                     return e.hour >= t
                 })
             } else {
-                setValues({...values, freeHours: freeHours})
-                return
-            }
-                
+                return freeHours
+            }               
         }
         if(filteredAppointments.length > 0){
             filteredAppointments.forEach((e) =>{ 
@@ -101,7 +168,7 @@ const AddAppointment = ({services, workers, appointments, handleShowWindow, getO
             }
         }
 
-        setValues({...values, freeHours: freeHours, time: serviceTime})
+        return freeHours
     }
     const handleChange = (e) => {
         setValues({...values, [e.target.name]: e.target.value})
@@ -144,6 +211,12 @@ const AddAppointment = ({services, workers, appointments, handleShowWindow, getO
             />
             <small>Pracownik</small>
             <select className='select input' name='worker' onChange={handleChange}>
+                <option
+                    id='anyWorker'
+                    value='anyWorker'
+                >
+                    Dowolny
+                </option>
                 {workers && workers.map( e => {
                     return (
                         <option key={e._id} id={e._id} value={e._id}>
@@ -151,11 +224,10 @@ const AddAppointment = ({services, workers, appointments, handleShowWindow, getO
                         </option>   
                     )
                 })}
-
             </select>
             <small>Usługa</small>
             <select 
-                className='select input' 
+                className='select input'  
                 name='service' 
                 onChange={handleService}
             >
